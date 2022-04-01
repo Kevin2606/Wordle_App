@@ -17,7 +17,9 @@ class GameScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
           )
         ],
       ),

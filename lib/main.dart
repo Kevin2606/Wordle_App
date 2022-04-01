@@ -31,9 +31,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Wordle App',
-      initialRoute: 'GameScreen',
+      initialRoute: 'HomeScreen',
       routes: {
         'HomeScreen': (context) => const HomeScreen(),
+        'LoginScreen': (context) => const LoginScreen(),
         'GameScreen': (context) => const GameScreen(),
       },
       theme: ThemeData.dark(),
