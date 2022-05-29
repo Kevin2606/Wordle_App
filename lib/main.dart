@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
         'HomeScreen': (context) => const HomeScreen(),
         'LoginScreen': (context) => const LoginScreen(),
         'GameScreen': (context) => const GameScreen(),
+        'AcountScreen': (context) => const AcountScreen(),
       },
       theme: ThemeData.dark(),
     );

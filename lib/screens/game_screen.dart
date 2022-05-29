@@ -14,14 +14,34 @@ class GameScreen extends StatelessWidget {
           'Wordle',
           textAlign: TextAlign.center,
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          )
-        ],
+      ),
+      endDrawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              child: Image.asset('assets/img/logo.png'),
+            ),
+            ListTile(
+              title: const Text('Cuenta'),
+              onTap: () {
+                Navigator.popAndPushNamed(context, 'AcountScreen');
+              },
+            ),
+            ListTile(
+              title: const Text('Configuración'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Salir'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
       ),
       body: Column(
         children: const [
