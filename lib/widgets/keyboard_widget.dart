@@ -161,6 +161,9 @@ class _KeyboardButton extends StatelessWidget {
 
   ButtonStyle _buttonStyleCustom(String? colorButton) {
     return ButtonStyle(
+      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+        const EdgeInsets.all(0),
+      ),
       backgroundColor: MaterialStateProperty.all<Color>(
         (colorButton == 'correct')
             ? const Color(0xff6aaa64)
