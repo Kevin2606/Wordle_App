@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wordle_app/models/user.dart';
 import 'package:wordle_app/providers/providers.dart';
 
 class PopupEndGameScreen extends StatelessWidget {
@@ -26,6 +27,12 @@ class PopupEndGameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String condition;
     gameCondition ? condition = 'winner' : condition = 'loser';
+    AcountProvider acountProvider =
+        Provider.of<AcountProvider>(context, listen: true);
+    late User user;
+    (acountProvider.userGame == null)
+        ? acountProvider.selectedUser()
+        : user = acountProvider.userGame!;
     return AlertDialog(
       contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
       backgroundColor: Theme.of(context).cardColor.withOpacity(0.9),
@@ -46,11 +53,10 @@ class PopupEndGameScreen extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          //TODO: NOMBRE DEL JUGADOR
-          const Text(
-            'nombrejugador',
+          Text(
+            user.nickname,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 23,
               fontWeight: FontWeight.bold,
             ),
@@ -103,6 +109,10 @@ class PopupEndGameScreen extends StatelessWidget {
           ),
           child: const Text('No'),
           onPressed: () {
+            GameProvider gameProvider =
+                Provider.of<GameProvider>(context, listen: false);
+            gameProvider.restarGame();
+            Navigator.of(context).pop();
             Navigator.of(context).pop();
           },
         ),

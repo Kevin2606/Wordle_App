@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wordle_app/providers/providers.dart';
 import 'package:wordle_app/widgets/widgets.dart';
 
 class GameScreen extends StatelessWidget {
@@ -6,40 +8,20 @@ class GameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GameProvider gameProvider =
+        Provider.of<GameProvider>(context, listen: false);
+    gameProvider.restarGame2();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        leading: Image.asset('assets/img/logo.png'),
-        title: const Text(
-          'Wordle',
-          textAlign: TextAlign.center,
-        ),
-      ),
-      endDrawer: Drawer(
-        child: ListView(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            DrawerHeader(
-              child: Image.asset('assets/img/logo.png'),
+            const Text(
+              'Wordle',
+              textAlign: TextAlign.center,
             ),
-            ListTile(
-              title: const Text('Cuenta'),
-              onTap: () {
-                Navigator.popAndPushNamed(context, 'AcountScreen');
-              },
-            ),
-            ListTile(
-              title: const Text('Configuración'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Salir'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-            ),
+            Image.asset('assets/img/logo.png', height: 75),
           ],
         ),
       ),

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class GameProvider extends ChangeNotifier {
   String answer = 'PERROS';
-  bool _saveWord = false;
+  int _numWords = 0;
+  final List<String> _wordsTemp = [];
   final List<String> _listCharacter = [];
   final List<String> _listWords = [];
   final List<String> _listCharCorrectAnswer = [];
   bool? _isCorrect;
-
   bool? get isCorrect => _isCorrect;
   List<String> get listWords => _listWords;
   List<String> get listCharacter => _listCharacter;
@@ -24,12 +24,22 @@ class GameProvider extends ChangeNotifier {
   }
 
   void restarGame() {
+    _numWords = 0;
+    _wordsTemp.clear();
     _listWords.clear();
     _listCharCorrectAnswer.clear();
     _listCharacter.clear();
     _isCorrect = null;
-    _saveWord = false;
     notifyListeners();
+  }
+
+  void restarGame2() {
+    _numWords = 0;
+    _wordsTemp.clear();
+    _listWords.clear();
+    _listCharCorrectAnswer.clear();
+    _listCharacter.clear();
+    _isCorrect = null;
   }
 
   String getCharacter(int index) {
@@ -53,27 +63,31 @@ class GameProvider extends ChangeNotifier {
 
   String? colorButton(String char) {
     if (_listCharCorrectAnswer.isEmpty) return null;
-    if (_listCharCorrectAnswer.contains(char)) {
+    if (!_listCharCorrectAnswer.contains(char)) return null;
+    if (_wordsTemp.contains(char)) return 'correct';
+    if (_listWords.last.split('').contains(char)) {
       List<String> lastWord = _listWords.last.split('');
-      for (int i = 0; i < answer.split('').length; i++) {
-        if (answer.split('')[i] == lastWord[i]) {
-          return 'correct';
+      List<int> index = lastWord
+          .asMap()
+          .entries
+          .where((element) => element.value == char)
+          .map((e) => e.key)
+          .toList();
+      for (int i in index) {
+        if (answer.split('')[i] == char) {
+          _wordsTemp.add(char);
         }
       }
-      return 'medium';
     }
-    return null;
+    return (_wordsTemp.contains(char)) ? 'correct' : 'medium';
   }
 
   void addCharacter(String word) {
     if (_listCharacter.length >= 36 || _isCorrect != null) return;
-    if (_listCharacter.length % 6 != 0 || _listCharacter.isEmpty) {
+    if (_listCharacter.length != (_numWords + 1) * 6) {
       _listCharacter.add(word);
-      if (_listCharacter.length % 6 == 0) _saveWord = true;
-    } else if (!_saveWord) {
-      _listCharacter.add(word);
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   void removeLastCharacter() {
@@ -88,24 +102,17 @@ class GameProvider extends ChangeNotifier {
   }
 
   void addWord() {
-    if (_listCharacter.length % 6 != 0 ||
-        _listCharacter.isEmpty ||
-        _isCorrect != null) return;
-    final length = _listWords.length;
-    if (_listCharacter.length == (6 * (length + 1))) {
-      List<String> listWordsTemp = _listCharacter.reversed.toList();
-      final answerSplit = answer.split('');
-
-      listWordsTemp = listWordsTemp.getRange(0, 6).toList().reversed.toList();
-      for (String character in listWordsTemp) {
-        if (answerSplit.contains(character)) {
-          if (!_listCharCorrectAnswer.contains(character)) {
-            _listCharCorrectAnswer.add(character);
-          }
+    if (_numWords <= 5 && _isCorrect != null) return;
+    if (_listCharacter.length == (_numWords + 1) * 6) {
+      _numWords++;
+      List<String> word = _listCharacter.sublist((_numWords - 1) * 6);
+      for (String element in word) {
+        if (answer.split('').contains(element) &&
+            !_listCharCorrectAnswer.contains(element)) {
+          _listCharCorrectAnswer.add(element);
         }
       }
-      _listWords.add(listWordsTemp.join());
-      _saveWord = false;
+      _listWords.add(word.join());
       _endGame();
       notifyListeners();
     }
