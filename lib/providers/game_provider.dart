@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:wordle_app/utils/list_words_utils.dart';
 
 class GameProvider extends ChangeNotifier {
-  String answer = 'PERROS';
+  String answer = '';
   int _numWords = 0;
-  final List<String> _wordsTemp = [];
+  final List<String> _wordsCorrect = [];
   final List<String> _listCharacter = [];
   final List<String> _listWords = [];
   final List<String> _listCharCorrectAnswer = [];
@@ -12,6 +13,18 @@ class GameProvider extends ChangeNotifier {
   List<String> get listWords => _listWords;
   List<String> get listCharacter => _listCharacter;
   List<String> get listCharCorrectAnswer => _listCharCorrectAnswer;
+
+  void startGame() {
+    _numWords = 0;
+    _wordsCorrect.clear();
+    _listWords.clear();
+    _listCharCorrectAnswer.clear();
+    _listCharacter.clear();
+    _isCorrect = null;
+    ListWordsUtils().getRandomWord().then((value) {
+      answer = value;
+    });
+  }
 
   void _endGame() {
     String word = _listWords.last;
@@ -25,21 +38,12 @@ class GameProvider extends ChangeNotifier {
 
   void restarGame() {
     _numWords = 0;
-    _wordsTemp.clear();
+    _wordsCorrect.clear();
     _listWords.clear();
     _listCharCorrectAnswer.clear();
     _listCharacter.clear();
     _isCorrect = null;
     notifyListeners();
-  }
-
-  void restarGame2() {
-    _numWords = 0;
-    _wordsTemp.clear();
-    _listWords.clear();
-    _listCharCorrectAnswer.clear();
-    _listCharacter.clear();
-    _isCorrect = null;
   }
 
   String getCharacter(int index) {
@@ -64,7 +68,7 @@ class GameProvider extends ChangeNotifier {
   String? colorButton(String char) {
     if (_listCharCorrectAnswer.isEmpty) return null;
     if (!_listCharCorrectAnswer.contains(char)) return null;
-    if (_wordsTemp.contains(char)) return 'correct';
+    if (_wordsCorrect.contains(char)) return 'correct';
     if (_listWords.last.split('').contains(char)) {
       List<String> lastWord = _listWords.last.split('');
       List<int> index = lastWord
@@ -75,11 +79,11 @@ class GameProvider extends ChangeNotifier {
           .toList();
       for (int i in index) {
         if (answer.split('')[i] == char) {
-          _wordsTemp.add(char);
+          _wordsCorrect.add(char);
         }
       }
     }
-    return (_wordsTemp.contains(char)) ? 'correct' : 'medium';
+    return (_wordsCorrect.contains(char)) ? 'correct' : 'medium';
   }
 
   void addCharacter(String word) {

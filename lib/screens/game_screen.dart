@@ -10,7 +10,7 @@ class GameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     GameProvider gameProvider =
         Provider.of<GameProvider>(context, listen: false);
-    gameProvider.restarGame2();
+    gameProvider.startGame();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
