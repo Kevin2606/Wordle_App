@@ -43,6 +43,9 @@ class GameProvider extends ChangeNotifier {
     _listCharCorrectAnswer.clear();
     _listCharacter.clear();
     _isCorrect = null;
+    ListWordsUtils().getRandomWord().then((value) {
+      answer = value;
+    });
     notifyListeners();
   }
 
