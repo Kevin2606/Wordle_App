@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wordle_app/models/user.dart';
+import 'package:wordle_app/models/account_models.dart';
 import 'package:wordle_app/providers/providers.dart';
 
 class AcountScreen extends StatelessWidget {
@@ -10,7 +10,7 @@ class AcountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     AcountProvider acountProvider =
         Provider.of<AcountProvider>(context, listen: true);
-    late User user;
+    late Account user;
     (acountProvider.userGame == null)
         ? acountProvider.selectedUser()
         : user = acountProvider.userGame!;
@@ -147,7 +147,7 @@ class AcountScreen extends StatelessWidget {
     );
   }
 
-  dynamic _showDialog(BuildContext context, User user,
+  dynamic _showDialog(BuildContext context, Account user,
       AcountProvider acountProvider, String mode) {
     showDialog(
       context: context,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wordle_app/models/user.dart';
+import 'package:wordle_app/models/account_models.dart';
 import 'package:wordle_app/providers/providers.dart';
 
 class PopupEndGameScreen extends StatelessWidget {
@@ -29,7 +29,7 @@ class PopupEndGameScreen extends StatelessWidget {
     gameCondition ? condition = 'winner' : condition = 'loser';
     AcountProvider acountProvider =
         Provider.of<AcountProvider>(context, listen: true);
-    late User user;
+    late Account user;
     (acountProvider.userGame == null)
         ? acountProvider.selectedUser()
         : user = acountProvider.userGame!;
